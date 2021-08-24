@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //import 'package:flutter_covid_dashboard_ui/config/palette.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -18,7 +19,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                   'BOSDYN',
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 25.0,
+                    fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -41,22 +42,50 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             //   ),
             // ),
             
+            // IconButton(
+            //   icon: const Icon(Icons.search_rounded),
+            //   iconSize: 28.0,
+            //   onPressed: () {
+            //     showSearch(context: context, delegate: CitySearch());
+            //   },
+            // ),
             IconButton(
-              icon: const Icon(Icons.search_rounded),
-              iconSize: 28.0,
-              onPressed: () {
-                showSearch(context: context, delegate: CitySearch());
-              },
-            ),
-            IconButton(
-              icon: 
-              CircleAvatar( 
-                backgroundColor: Colors.brown.shade800,
-                child: Text('TS'),)
-              ,
               onPressed: (){
-              print('profile');
-            }), 
+              _showPayload(context);
+            }, 
+            icon: FaIcon(FontAwesomeIcons.video)
+            )
+            ,
+            IconButton(
+              onPressed: (){
+              _showSpotStatus(context);
+            }, 
+            icon: FaIcon(FontAwesomeIcons.robot)
+            )
+            ,
+            IconButton(
+              onPressed: (){
+              _showBattery(context);
+            }, 
+            icon: FaIcon(FontAwesomeIcons.batteryFull)
+            )
+            ,
+            IconButton(
+              onPressed: (){
+              _showTemperature(context);
+            }, 
+            icon: FaIcon(FontAwesomeIcons.thermometerThreeQuarters)
+            )
+            ,
+            // IconButton(
+            //   icon: 
+            //   CircleAvatar( 
+            //     backgroundColor: Colors.brown.shade800,
+            //     child: Text('TS'),)
+            //   ,
+            //   onPressed: (){
+            //   print('profile');
+            // }), 
             
       ],
     );
@@ -64,6 +93,83 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  
+  void _showBattery(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Battery Alert!!"),
+          content: new Text("80 %"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showTemperature(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Temperature Alert!!"),
+          content: new Text("34 °"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showSpotStatus(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Connection Alert!!"),
+          content: new Text("Connected"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showPayload(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Payload Alert!!"),
+          content: new Text("Connected"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class CitySearch extends SearchDelegate<String> {

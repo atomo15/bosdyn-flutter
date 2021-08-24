@@ -12,7 +12,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     HomeScreen(),
     Scaffold(),
     SubmitScreen(),
-    Scaffold(),
+    Login_Screen(),
     Scaffold(),
   ];
   int _currentIndex = 0;
@@ -32,7 +32,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
         unselectedItemColor: Colors.grey,
         elevation: 0.0,
         items: [
-          Icons.home_rounded, Icons.mic_rounded, Icons.volume_up_rounded]
+          Icons.home_rounded, Icons.mic_rounded, Icons.volume_up_rounded, Icons.person]
             .asMap()
             .map((key, value) => MapEntry(
                   key,

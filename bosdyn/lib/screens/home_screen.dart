@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:bosdyn/widgets/widgets.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:favorite_button/favorite_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _country = 'USA';
+  //String _country = 'USA';
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),
         slivers: <Widget>[
-          _buildHeader(screenHeight),
+          //_buildHeader(screenHeight),
           //_buildImageShow(screenHeight),
-          _buildPreventionTips(screenHeight),
+          //_buildPreventionTips(screenHeight),
           //_buildTopBrandsContent(screenHeight),
-          _buildYourStyle(screenHeight),
+          //_buildYourStyle(screenHeight),
           //_buildYourStyleContent(screenHeight),
         ],
       ),

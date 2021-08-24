@@ -14,7 +14,6 @@ class SubmitScreen extends StatefulWidget {
 }
 
 class _SubmitScreenState extends State<SubmitScreen> {
-  String _country = 'USA';
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +152,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
           children: <Widget>[
             Center(
               child:Text(
-              'Submit Item',
+              'Speaker',
               style: const TextStyle(
                 fontSize: 22.0,
                 fontWeight: FontWeight.w600,
