@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bosdyn/screens/screens.dart';
+import 'package:bosdyn/globals.dart' as globals;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //import 'package:flutter_covid_dashboard_ui/screens/screens.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -15,7 +17,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     Login_Screen(),
     Scaffold(),
   ];
-  int _currentIndex = 0;
+  int _currentIndex = globals.justLoggedIn?4:0;
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +27,19 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
+        onTap: (index){
+          setState(() => _currentIndex = index);
+          globals.justLoggedIn = false;
+          },
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
         elevation: 0.0,
         items: [
-          Icons.home_rounded, Icons.mic_rounded, Icons.volume_up_rounded, Icons.person]
+          Icons.comment_rounded, Icons.mic_rounded, Icons.volume_up_rounded, Icons.person]
             .asMap()
             .map((key, value) => MapEntry(
                   key,
@@ -45,11 +52,12 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                       ),
                       decoration: BoxDecoration(
                         color: _currentIndex == key
-                            ? Colors.red[600]
+                            ? Colors.blue[600]
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      child: Icon(value),
+                      child: Icon(value,color:  _currentIndex == key
+                            ?Colors.white:Colors.blue,),
                     ),
                   ),
                 ))

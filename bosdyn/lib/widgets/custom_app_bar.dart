@@ -1,24 +1,42 @@
+import 'dart:convert';
+
+import 'package:bosdyn/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:bosdyn/globals.dart' as globals;
 //import 'package:flutter_covid_dashboard_ui/config/palette.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+  
+  var is_spot_con = false;
+  var is_cam_con = false;
+  var is_api_con = false;
+  late var battery = "-";
+  var temp = "-";
+ 
+  
   @override
   Widget build(BuildContext context) {
     return AppBar(
       //backgroundColor: Palette.primaryColor,
-      backgroundColor: Colors.amber,
+      backgroundColor: Colors.black,
       elevation: 0.0,
       leading: IconButton(
-        icon: const Icon(Icons.menu),
+        icon: const Icon(Icons.home,color: Colors.blue,),
         iconSize: 28.0,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BottomNavScreen()),
+                );
+        },
       ),
       title: Center(
         child: Text(
                   'BOSDYN',
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.blue,
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -49,34 +67,185 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             //     showSearch(context: context, delegate: CitySearch());
             //   },
             // ),
+            // IconButton(
+            //   onPressed: (){
+            //   _showPayload(context);
+            // }, 
+            // icon: FaIcon(FontAwesomeIcons.video)
+            // )
+            // ,
+            // IconButton(
+            //   onPressed: (){
+            //   _showSpotStatus(context);
+            // }, 
+            // icon: FaIcon(FontAwesomeIcons.robot)
+            // )
+            // ,
+            // IconButton(
+            //   onPressed: (){
+            //   _showBattery(context);
+            // }, 
+            // icon: FaIcon(FontAwesomeIcons.batteryFull)
+            // )
+            // ,
             IconButton(
-              onPressed: (){
-              _showPayload(context);
+              onPressed: () async{
+              Future<String> fetchApi() async {
+                        //  print("AM IN");
+                        if(globals.isLoggedIn==true){
+                          final response = await http
+                            .get(Uri.parse('https://7325-161-130-189-212.ngrok.io/api'));
+                          if (response.statusCode == 200) {
+                          // If the server did return a 200 OK response,
+                          // then parse the JSON.
+                          //return Album.fromJson(jsonDecode(response.body));
+                          var api_result = jsonDecode(response.body);
+                          //print(api_result);
+                          battery = api_result['battery'].toString();
+                          temp =  api_result['temperature'].toString();
+                          is_spot_con = api_result['spot'];
+                          is_cam_con = api_result['payload'];
+                          is_api_con = true;
+                          return "work";
+                          } else {
+                            is_api_con = false;
+                            // If the server did not return a 200 OK response,
+                            // then throw an exception.
+                            //throw Exception('Failed to load album');
+                            return "api not working";
+                          }
+                        }else{
+                          final response = await http
+                            .get(Uri.parse('https://7325-161-130-189-212.ngrok.io/'));
+                          if (response.statusCode == 200) {
+                            is_api_con = true;
+                            return 'api is works';
+                          }
+                          
+                        }
+                        is_api_con = false;
+                        return "api not working";
+                        
+                      }
+              await fetchApi();  
+              // print("test $is_cam_con");
+              //_showTemperature(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.black,
+                      content: Center(
+                      child: 
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          
+                          FaIcon(FontAwesomeIcons.solidUser,color: Colors.blue,),
+                          SizedBox(height: 10),
+                          FaIcon(globals.isLoggedIn?
+                            FontAwesomeIcons.solidCheckCircle:
+                            FontAwesomeIcons.solidTimesCircle,
+                            color: globals.isLoggedIn?
+                            Colors.green:
+                            Colors.red,),
+                            
+                          SizedBox(height: 10),
+                          
+                          FaIcon(FontAwesomeIcons.server,color: Colors.blue),
+                          SizedBox(height: 10),
+                          FaIcon(is_api_con?
+                            FontAwesomeIcons.solidCheckCircle:
+                            FontAwesomeIcons.solidTimesCircle,
+                            color: is_api_con?
+                            Colors.green:
+                            Colors.red,),
+                            
+                          SizedBox(height: 10),
+                          
+                          FaIcon(FontAwesomeIcons.robot,color: Colors.blue),
+                          SizedBox(height: 10),
+                          
+                          FaIcon(is_spot_con?
+                            FontAwesomeIcons.solidCheckCircle:
+                            FontAwesomeIcons.solidTimesCircle,
+                            color: is_spot_con?
+                            Colors.green:
+                            Colors.red,),
+                            
+                          SizedBox(height: 10),
+                          
+                          FaIcon(FontAwesomeIcons.video,color: Colors.blue),
+                          SizedBox(height: 10),
+                          
+                          FaIcon(is_cam_con?
+                            FontAwesomeIcons.solidCheckCircle:
+                            FontAwesomeIcons.solidTimesCircle,
+                            color: is_cam_con?
+                            Colors.green:
+                            Colors.red,),
+                            
+                          SizedBox(height: 10),
+                          
+                          FaIcon(FontAwesomeIcons.batteryFull,color: Colors.blue),
+                          SizedBox(height: 10),
+                          // Text(is_spot_con?battery+' %':'- ',style: 
+                          // TextStyle(
+                          //   fontSize: 20,
+                          //   fontWeight: FontWeight.bold,
+                          //   color: Colors.blue
+                          //   ),
+                          // ),
+                          RichText(text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: is_spot_con?battery:'-',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  )
+                              ),
+                              WidgetSpan(
+                                child:  Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                                        child: FaIcon(FontAwesomeIcons.percentage,color: Colors.blue),
+                                      ),
+                                )
+                            ]
+                          )),
+                          SizedBox(height: 10),
+                          FaIcon(FontAwesomeIcons.temperatureHigh,color: Colors.blue),
+                          SizedBox(height: 10),
+                          Text(is_spot_con?temp+' °':'- °',
+                          style: 
+                          TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue
+                            ),
+                          ),
+                        ],
+                      )
+                      )
+                      ),
+                  );
             }, 
-            icon: FaIcon(FontAwesomeIcons.video)
+            icon: FaIcon(FontAwesomeIcons.robot,color: Colors.blue,)
             )
             ,
-            IconButton(
+             globals.isLoggedIn?IconButton(
+              icon: FaIcon(FontAwesomeIcons.signOutAlt,color: Colors.blue,),
               onPressed: (){
-              _showSpotStatus(context);
-            }, 
-            icon: FaIcon(FontAwesomeIcons.robot)
-            )
-            ,
-            IconButton(
-              onPressed: (){
-              _showBattery(context);
-            }, 
-            icon: FaIcon(FontAwesomeIcons.batteryFull)
-            )
-            ,
-            IconButton(
-              onPressed: (){
-              _showTemperature(context);
-            }, 
-            icon: FaIcon(FontAwesomeIcons.thermometerThreeQuarters)
-            )
-            ,
+                globals.isLoggedIn = false;
+                globals.API_IP = "";
+                globals.IP = "";
+                globals.username = "";
+                globals.password = "";
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BottomNavScreen()),
+                );
+              },
+            ):SizedBox(height:0)
             // IconButton(
             //   icon: 
             //   CircleAvatar( 

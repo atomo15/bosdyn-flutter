@@ -27,8 +27,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
           //_buildHeader(screenHeight),
           //_buildImageShow(screenHeight),
           _buidSubmitTitle(screenHeight),
-          _buidSubmitOption(screenHeight),
-          _buidSubmitButton(screenHeight),
+          //_buidSubmitOption(screenHeight),
+          //_buidSubmitButton(screenHeight),
           //_buildTopBrandsContent(screenHeight),
           //_buildYourStyle(screenHeight),
           //_buildYourStyleContent(screenHeight),
@@ -216,36 +216,36 @@ class _SubmitScreenState extends State<SubmitScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                  children: [
-                    FlatButton.icon(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10.0,
-                        horizontal: 20.0,
-                      ),
-                      onPressed: () {},
-                      color: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      icon: const Icon(
-                        Icons.chat_bubble,
-                        color: Colors.white,
-                      ),
-                      label: Text(
-                        'Self-delivery',
-                        // style: Styles.buttonTextStyle,
-                      ),
-                      textColor: Colors.white,
-                    ),
-                  ],
-                ),
+            //   Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Column(
+            //       children: [
+            //         FlatButton.icon(
+            //           padding: const EdgeInsets.symmetric(
+            //             vertical: 10.0,
+            //             horizontal: 20.0,
+            //           ),
+            //           onPressed: () {},
+            //           color: Colors.blue,
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(30.0),
+            //           ),
+            //           icon: const Icon(
+            //             Icons.chat_bubble,
+            //             color: Colors.white,
+            //           ),
+            //           label: Text(
+            //             'Self-delivery',
+            //             // style: Styles.buttonTextStyle,
+            //           ),
+            //           textColor: Colors.white,
+            //         ),
+            //       ],
+            //     ),
                 
-              ],
-            ),
+            //   ],
+            // ),
             
             const SizedBox(height: 10.0),
           ],
