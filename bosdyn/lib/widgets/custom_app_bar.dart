@@ -32,9 +32,11 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 );
         },
       ),
+      
+    
       title: Center(
         child: Text(
-                  'BOSDYN',
+                  'BOSDYN APP',
                   style: const TextStyle(
                     color: Colors.blue,
                     fontSize: 18.0,
@@ -44,6 +46,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         )
       ,
       actions: <Widget>[
+            
             // Padding(
             //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             //   child: TextFormField(
@@ -206,7 +209,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                               ),
                               WidgetSpan(
                                 child:  Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                                         child: FaIcon(FontAwesomeIcons.percentage,color: Colors.blue),
                                       ),
                                 )

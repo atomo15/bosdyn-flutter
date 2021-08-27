@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:bosdyn/widgets/widgets.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:favorite_button/favorite_button.dart';
+import 'package:bosdyn/globals.dart' as globals;
+import 'package:http/http.dart' as http;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SubmitScreen extends StatefulWidget {
   @override
@@ -20,6 +24,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.black,
       appBar: CustomAppBar(),
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),
@@ -27,7 +32,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
           //_buildHeader(screenHeight),
           //_buildImageShow(screenHeight),
           _buidSubmitTitle(screenHeight),
-          //_buidSubmitOption(screenHeight),
+          _buidSubmitDashBroad(screenHeight),
           //_buidSubmitButton(screenHeight),
           //_buildTopBrandsContent(screenHeight),
           //_buildYourStyle(screenHeight),
@@ -151,15 +156,27 @@ class _SubmitScreenState extends State<SubmitScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Center(
-              child:Text(
-              'Speaker',
-              style: const TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w600,
-              ),
+              child:RichText(text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Audio Files ",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  )
+                              ),
+                              WidgetSpan(
+                                child:  Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                        child: globals.isLoggedIn?
+                                        FaIcon(FontAwesomeIcons.solidCheckCircle,color: Colors.blue):
+                                        FaIcon(FontAwesomeIcons.solidTimesCircle,color: Colors.red),
+                                      ),
+                                )
+                            ]
+                          )),
             ),
-            ),
-            
             const SizedBox(height: 10.0),
           ],
         ),
@@ -167,40 +184,84 @@ class _SubmitScreenState extends State<SubmitScreen> {
     );
   }
   
-    SliverToBoxAdapter _buidSubmitOption(double screenHeight) {
+    SliverToBoxAdapter _buidSubmitDashBroad(double screenHeight) {
     return SliverToBoxAdapter(
       child: Center(
         //padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: 
+        !globals.isLoggedIn?
+        Text("")
+        :
+        Wrap(
+          verticalDirection: VerticalDirection.down,
+          //mainAxisSize: MainAxisSize.max,
+          //crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                  children: [
-                    IconButton(onPressed: (){
-                    }, icon: Text(
-                      "1"
-                    )),
-                    
-                    Text('Item Info')
-                  ],
-                ),
-                Column(
-                  children: [
-                    IconButton(onPressed: (){
-                    }, icon: Text(
-                      "2"
-                    )),
-                    
-                    Text('Item Info')
-                  ],
-                ),
+            ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              children: <Widget>[
+                  // Center(
+                  //   child: Card(
+                  //      shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(10.0),
+                  //       ),
+                  //     child: InkWell(
+                  //       splashColor: Colors.blue.withAlpha(30),
+                  //       onTap: () {
+                  //         print('Card  tapped.');
+                  //       },
+                  //       child: Text('data')
+                  //       ),
+                  //       ),
+                  // ),
+                    Container(
+                       height: screenHeight*0.1,
+                       width: MediaQuery.of(context).size.width,
+                    child: Card(
+                      semanticContainer: true,
+                      elevation: 10,
+                      color: Colors.blue,
+                       shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onLongPress: (){
+                          print("long");
+                        },
+                        onTap: () {
+                          print('Card  tapped.');
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(' data.mp3',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black
+                            ),
+                            ),
+                            Text('10 seconds',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black
+                            ),
+                            ),
+                            IconButton(onPressed: (){
+                            }, icon: FaIcon(FontAwesomeIcons.upload,color: Colors.black)),
+                            IconButton(onPressed: (){
+                            }, icon: FaIcon(FontAwesomeIcons.playCircle,color: Colors.black))
+                          ],
+                        )
+                        
+                        ),
+                        ),
+                      )
               ],
             ),
-            
             const SizedBox(height: 10.0),
           ],
         ),

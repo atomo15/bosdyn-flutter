@@ -67,11 +67,84 @@ class _Login_ScreenState extends State<Login_Screen> {
         child: Center(
           child: 
           globals.isLoggedIn?
-          Text('Usename : '+globals.username
-          +'\n'+'IP Address : '+globals.IP
-          +'\n'+'API IP Address : '+globals.API_IP,
-          style: TextStyle(
-            fontSize: 20),)
+          // Text('Usename : '+globals.username
+          // +'\n'+'IP Address : '+globals.IP
+          // +'\n'+'API IP Address : '+globals.API_IP,
+          // style: TextStyle(
+          //   fontSize: 20),)
+          Column(
+            children: [
+              
+              FaIcon(FontAwesomeIcons.userAlt,color: Colors.blue),
+              SizedBox(height: screenHeight*0.01,),
+              Container(
+                //width: MediaQuery.of(context).size.width*0.5,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5)
+                    )
+                  ),
+                child: Text(
+                      ' '+globals.username+' ',
+                      style: 
+                      TextStyle(
+                        //backgroundColor: Colors.green,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      ),
+              ),
+              
+              SizedBox(height: screenHeight*0.01,),
+
+              FaIcon(FontAwesomeIcons.robot,color: Colors.blue),
+              SizedBox(height: screenHeight*0.01,),
+              Container(
+                //width: MediaQuery.of(context).size.width*0.5,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5)
+                    )
+                  ),
+                child: Text(
+                        ' '+globals.IP+' ',
+                        style: 
+                        TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+              ),
+              
+              SizedBox(height: screenHeight*0.01,),
+              FaIcon(FontAwesomeIcons.server,color: Colors.blue),
+              SizedBox(height: screenHeight*0.01,),
+              Container(
+                //width: MediaQuery.of(context).size.width*0.5,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5)
+                    )
+                  ),
+                child: Text(
+                        ' '+globals.API_IP+' ',
+                        style: 
+                        TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      )
+              ),
+              
+              
+            ],
+          )
           :Form(
             key: _formKey,
             child: Column(
