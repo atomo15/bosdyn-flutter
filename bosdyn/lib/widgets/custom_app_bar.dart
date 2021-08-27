@@ -96,21 +96,24 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
               Future<String> fetchApi() async {
                         //  print("AM IN");
                         if(globals.isLoggedIn==true){
-                          final response = await http
-                            .get(Uri.parse('https://7325-161-130-189-212.ngrok.io/api'));
-                          if (response.statusCode == 200) {
-                          // If the server did return a 200 OK response,
-                          // then parse the JSON.
-                          //return Album.fromJson(jsonDecode(response.body));
-                          var api_result = jsonDecode(response.body);
-                          //print(api_result);
-                          battery = api_result['battery'].toString();
-                          temp =  api_result['temperature'].toString();
-                          is_spot_con = api_result['spot'];
-                          is_cam_con = api_result['payload'];
-                          is_api_con = true;
-                          return "work";
-                          } else {
+                          
+                          try{
+                            final response = await http
+                            .get(Uri.parse('https://7aa1-173-24-76-195.ngrok.io/api'));
+                              if (response.statusCode == 200) {
+                              // If the server did return a 200 OK response,
+                              // then parse the JSON.
+                              //return Album.fromJson(jsonDecode(response.body));
+                              var api_result = jsonDecode(response.body);
+                              //print(api_result);
+                              battery = api_result['battery'].toString();
+                              temp =  api_result['temperature'].toString();
+                              is_spot_con = api_result['spot'];
+                              is_cam_con = api_result['payload'];
+                              is_api_con = true;
+                              return "work";
+                              } 
+                          }catch (error){
                             is_api_con = false;
                             // If the server did not return a 200 OK response,
                             // then throw an exception.
@@ -118,12 +121,20 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                             return "api not working";
                           }
                         }else{
-                          final response = await http
-                            .get(Uri.parse('https://7325-161-130-189-212.ngrok.io/'));
-                          if (response.statusCode == 200) {
+                          
+                          try{
+                            final response = await http
+                            .get(Uri.parse('https://7aa1-173-24-76-195.ngrok.io/'));
+                            if (response.statusCode == 200) {
                             is_api_con = true;
                             return 'api is works';
                           }
+                          }catch (error){
+                            print('api not working');
+                            is_api_con = false;
+                            return "api not working";
+                          }
+                          
                           
                         }
                         is_api_con = false;

@@ -33,6 +33,7 @@ dependencies:
   flutter_image_slideshow: ^0.1.1
   font_awesome_flutter: ^9.1.0
   http: ^0.13.3
+  audioplayers: ^0.19.1
 
 dev_dependencies:
   flutter_test:
