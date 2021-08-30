@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:ui';
 
+import 'package:bosdyn/screens/test_screen.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_covid_dashboard_ui/config/palette.dart';
 //import 'package:flutter_covid_dashboard_ui/config/styles.dart';
@@ -11,6 +12,9 @@ import 'package:favorite_button/favorite_button.dart';
 import 'package:bosdyn/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:foldable_sidebar/foldable_sidebar.dart';
+import 'package:swipedetector/swipedetector.dart';
 
 class SubmitScreen extends StatefulWidget {
   @override
@@ -18,15 +22,29 @@ class SubmitScreen extends StatefulWidget {
 }
 
 class _SubmitScreenState extends State<SubmitScreen> {
-
+  FSBStatus status = FSBStatus.FSB_CLOSE;
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    FSBStatus drawerStatus;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       appBar: CustomAppBar(),
-      body: CustomScrollView(
+      body: SwipeDetector(
+        onSwipeRight: (){
+          setState(() {
+            status = FSBStatus.FSB_OPEN;
+          });
+        } ,
+        onSwipeLeft: (){
+          setState(() {
+            status = FSBStatus.FSB_CLOSE;
+          });
+        },
+        child: FoldableSidebarBuilder(
+        status: status,drawer: CustomDrawer(),screenContents: 
+        CustomScrollView(
         physics: ClampingScrollPhysics(),
         slivers: <Widget>[
           //_buildHeader(screenHeight),
@@ -38,7 +56,20 @@ class _SubmitScreenState extends State<SubmitScreen> {
           //_buildYourStyle(screenHeight),
           //_buildYourStyleContent(screenHeight),
         ],
-      ),
+        ),
+        drawerBackgroundColor: Colors.black,),
+        ),
+        floatingActionButton: FloatingActionButton(
+        onPressed: (){
+        setState(() {
+          status = status == FSBStatus.FSB_OPEN?FSBStatus.FSB_CLOSE:FSBStatus.FSB_OPEN;
+        });
+      },child: FaIcon(FontAwesomeIcons.bars,color: Colors.black,),),
+      
+      
+      
+      
+      
     );
   }
 
@@ -150,13 +181,17 @@ class _SubmitScreenState extends State<SubmitScreen> {
 
   SliverToBoxAdapter _buidSubmitTitle(double screenHeight) {
     return SliverToBoxAdapter(
+      
       child: Container(
+        color: Colors.black,
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Center(
-              child:RichText(text: TextSpan(
+              child:RichText(
+                text: TextSpan(
+                
                             children: [
                               TextSpan(
                                 text: "Audio Files ",

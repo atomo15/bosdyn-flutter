@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BottomNavScreen(),
+      home: BottomNavScreen(pages_index: 0),
     );
   }
 }

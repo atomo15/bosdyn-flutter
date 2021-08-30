@@ -28,11 +28,10 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         onPressed: () {
           Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BottomNavScreen()),
+                  MaterialPageRoute(builder: (context) => BottomNavScreen(pages_index: 0,)),
                 );
         },
       ),
-      
     
       title: Center(
         child: Text(
@@ -46,51 +45,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         )
       ,
       actions: <Widget>[
-            
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            //   child: TextFormField(
-            //     decoration: InputDecoration(
-            //       prefixIcon: Icon(Icons.search_rounded),
-            //       border: OutlineInputBorder(
-            //         borderRadius: BorderRadius.circular(30.0),
-            //       ),
-            //       //labelText: 'Enter your username',
-            //       // hintText: 'search',
-            //       suffixIcon: Icon(Icons.photo_rounded),
-            //     ),
-                
-            //   ),
-            // ),
-            
-            // IconButton(
-            //   icon: const Icon(Icons.search_rounded),
-            //   iconSize: 28.0,
-            //   onPressed: () {
-            //     showSearch(context: context, delegate: CitySearch());
-            //   },
-            // ),
-            // IconButton(
-            //   onPressed: (){
-            //   _showPayload(context);
-            // }, 
-            // icon: FaIcon(FontAwesomeIcons.video)
-            // )
-            // ,
-            // IconButton(
-            //   onPressed: (){
-            //   _showSpotStatus(context);
-            // }, 
-            // icon: FaIcon(FontAwesomeIcons.robot)
-            // )
-            // ,
-            // IconButton(
-            //   onPressed: (){
-            //   _showBattery(context);
-            // }, 
-            // icon: FaIcon(FontAwesomeIcons.batteryFull)
-            // )
-            // ,
             IconButton(
               onPressed: () async{
               Future<String> fetchApi() async {
@@ -256,7 +210,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 globals.password = "";
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BottomNavScreen()),
+                  MaterialPageRoute(builder: (context) => BottomNavScreen(pages_index: 3,)),
                 );
               },
             ):SizedBox(height:0)

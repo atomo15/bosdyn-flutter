@@ -305,7 +305,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                        globals.API_IP = api_ip;
                          Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => BottomNavScreen()),
+                            MaterialPageRoute(builder: (context) => BottomNavScreen(pages_index: 3,)),
                           );
                       //  Future<String> fetchAlbum() async {
                       //    print("AM IN");
