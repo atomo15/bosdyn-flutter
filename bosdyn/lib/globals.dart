@@ -4,6 +4,8 @@ bool isLoggedIn = false;
 
 bool isSpotCon = false;
 
+bool isApiCon = false;
+
 bool isCamCon = false;
 
 bool justLoggedIn = false;
@@ -15,3 +17,7 @@ String password = "";
 String IP = "";
 
 String API_IP = "";
+
+String battery = "";
+
+String Temp = "";

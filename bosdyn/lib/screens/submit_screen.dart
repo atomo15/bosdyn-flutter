@@ -25,9 +25,11 @@ class _SubmitScreenState extends State<SubmitScreen> {
   FSBStatus status = FSBStatus.FSB_CLOSE;
   @override
   Widget build(BuildContext context) {
+    api();
     final screenHeight = MediaQuery.of(context).size.height;
     FSBStatus drawerStatus;
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       appBar: CustomAppBar(),
@@ -65,12 +67,10 @@ class _SubmitScreenState extends State<SubmitScreen> {
           status = status == FSBStatus.FSB_OPEN?FSBStatus.FSB_CLOSE:FSBStatus.FSB_OPEN;
         });
       },child: FaIcon(FontAwesomeIcons.bars,color: Colors.black,),),
-      
-      
-      
-      
-      
-    );
+    )
+      );
+    
+    
   }
 
   SliverToBoxAdapter _buildHeader(double screenHeight) {

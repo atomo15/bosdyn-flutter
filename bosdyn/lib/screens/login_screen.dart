@@ -247,13 +247,33 @@ class _Login_ScreenState extends State<Login_Screen> {
                   //contentPadding: EdgeInsets.all(10)
                 ),
                 onSaved: (String? value) {
-                  ip = value!; 
+                  if(value=='default'){
+                    ip = '192.168.80.3';
+                  }
+                  else{
+                    ip = value!; 
+                  }
                 },
                 validator: (String? value) {
                   if(value == null || value.isEmpty){
                     return 'Please enter some text';                    
                   }
-                  return (value != null && value.contains('@')) ? 'Do not use the @ char.' : null;
+                  else{
+                    if(value=='default'){
+                      ip = "192.168.80.3";
+                    }else{
+                      var dot = 0;
+                      for(var i =0;i<value.length;i++){
+                        if(value[i]=='.'){
+                          if(dot<3){
+                            dot++;
+                          }
+                          return '. cannot have more than 3';
+                        }
+                      }
+                    }
+                  }
+                  return null;
                 },
               ),
               ),
@@ -303,6 +323,9 @@ class _Login_ScreenState extends State<Login_Screen> {
                        globals.password = passwords;
                        globals.IP = ip;
                        globals.API_IP = api_ip;
+                       
+                       print('check ip');
+                       print(globals.IP);
                          Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => BottomNavScreen(pages_index: 3,)),

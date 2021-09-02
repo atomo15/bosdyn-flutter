@@ -53,7 +53,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                           
                           try{
                             final response = await http
-                            .get(Uri.parse('https://7aa1-173-24-76-195.ngrok.io/api'));
+                            .get(Uri.parse('https://2c4c-128-206-16-255.ngrok.io/api'));
                               if (response.statusCode == 200) {
                               // If the server did return a 200 OK response,
                               // then parse the JSON.
@@ -78,7 +78,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                           
                           try{
                             final response = await http
-                            .get(Uri.parse('https://7aa1-173-24-76-195.ngrok.io/'));
+                            .get(Uri.parse('https://2c4c-128-206-16-255.ngrok.io/'));
                             if (response.statusCode == 200) {
                             is_api_con = true;
                             return 'api is works';
