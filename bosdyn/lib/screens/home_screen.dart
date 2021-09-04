@@ -52,6 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       "display":"Japanese",
       "value":"ja"
+    },
+    {
+      "display":"Italian",
+      "value":"it"
+    },
+    {
+      "display":"Spanish",
+      "value":"es"
     }
     
   ];
