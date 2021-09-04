@@ -41,6 +41,19 @@ class _HomeScreenState extends State<HomeScreen> {
       "display": "Thai",
       "value": "th",
     },
+    {
+      "display":"Mandarin",
+      "value":"zh-CN"
+    },
+    {
+      "display":"Korean",
+      "value":"ko"
+    },
+    {
+      "display":"Japanese",
+      "value":"ja"
+    }
+    
   ];
   @override
   void initState() {

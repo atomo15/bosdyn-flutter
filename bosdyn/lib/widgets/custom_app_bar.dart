@@ -35,7 +35,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     
       title: Center(
         child: Text(
-                  'BOSDYN APP',
+                  'BOSDYN',
                   style: const TextStyle(
                     color: Colors.blue,
                     fontSize: 18.0,
@@ -45,161 +45,160 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         )
       ,
       actions: <Widget>[
-            IconButton(
-              onPressed: () async{
-              Future<String> fetchApi() async {
-                        //  print("AM IN");
-                        if(globals.isLoggedIn==true){
+            // IconButton(
+            //   onPressed: () async{
+            //   Future<String> fetchApi() async {
+            //             //  print("AM IN");
+            //             if(globals.isLoggedIn==true){
                           
-                          try{
-                            final response = await http
-                            .get(Uri.parse('https://2c4c-128-206-16-255.ngrok.io/api'));
-                              if (response.statusCode == 200) {
-                              // If the server did return a 200 OK response,
-                              // then parse the JSON.
-                              //return Album.fromJson(jsonDecode(response.body));
-                              var api_result = jsonDecode(response.body);
-                              //print(api_result);
-                              battery = api_result['battery'].toString();
-                              temp =  api_result['temperature'].toString();
-                              is_spot_con = api_result['spot'];
-                              is_cam_con = api_result['payload'];
-                              is_api_con = true;
-                              return "work";
-                              } 
-                          }catch (error){
-                            is_api_con = false;
-                            // If the server did not return a 200 OK response,
-                            // then throw an exception.
-                            //throw Exception('Failed to load album');
-                            return "api not working";
-                          }
-                        }else{
+            //               try{
+            //                 final response = await http
+            //                 .get(Uri.parse('https://2c4c-128-206-16-255.ngrok.io/api'));
+            //                   if (response.statusCode == 200) {
+            //                   // If the server did return a 200 OK response,
+            //                   // then parse the JSON.
+            //                   //return Album.fromJson(jsonDecode(response.body));
+            //                   var api_result = jsonDecode(response.body);
+            //                   //print(api_result);
+            //                   battery = api_result['battery'].toString();
+            //                   temp =  api_result['temperature'].toString();
+            //                   is_spot_con = api_result['spot'];
+            //                   is_cam_con = api_result['payload'];
+            //                   is_api_con = true;
+            //                   return "work";
+            //                   } 
+            //               }catch (error){
+            //                 is_api_con = false;
+            //                 // If the server did not return a 200 OK response,
+            //                 // then throw an exception.
+            //                 //throw Exception('Failed to load album');
+            //                 return "api not working";
+            //               }
+            //             }else{
                           
-                          try{
-                            final response = await http
-                            .get(Uri.parse('https://2c4c-128-206-16-255.ngrok.io/'));
-                            if (response.statusCode == 200) {
-                            is_api_con = true;
-                            return 'api is works';
-                          }
-                          }catch (error){
-                            print('api not working');
-                            is_api_con = false;
-                            return "api not working";
-                          }
+            //               try{
+            //                 final response = await http
+            //                 .get(Uri.parse('https://2c4c-128-206-16-255.ngrok.io/'));
+            //                 if (response.statusCode == 200) {
+            //                 is_api_con = true;
+            //                 return 'api is works';
+            //               }
+            //               }catch (error){
+            //                 print('api not working');
+            //                 is_api_con = false;
+            //                 return "api not working";
+            //               }
                           
                           
-                        }
-                        is_api_con = false;
-                        return "api not working";
+            //             }
+            //             is_api_con = false;
+            //             return "api not working";
                         
-                      }
-              await fetchApi();  
-              // print("test $is_cam_con");
-              //_showTemperature(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: Colors.black,
-                      content: Center(
-                      child: 
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+            //           }
+            //   await fetchApi();  
+            //   // print("test $is_cam_con");
+            //   //_showTemperature(context);
+            //   ScaffoldMessenger.of(context).showSnackBar(
+            //         SnackBar(
+            //           backgroundColor: Colors.black,
+            //           content: Center(
+            //           child: 
+            //           Column(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
                           
-                          FaIcon(FontAwesomeIcons.solidUser,color: Colors.blue,),
-                          SizedBox(height: 10),
-                          FaIcon(globals.isLoggedIn?
-                            FontAwesomeIcons.solidCheckCircle:
-                            FontAwesomeIcons.solidTimesCircle,
-                            color: globals.isLoggedIn?
-                            Colors.green:
-                            Colors.red,),
+            //               FaIcon(FontAwesomeIcons.solidUser,color: Colors.blue,),
+            //               SizedBox(height: 10),
+            //               FaIcon(globals.isLoggedIn?
+            //                 FontAwesomeIcons.solidCheckCircle:
+            //                 FontAwesomeIcons.solidTimesCircle,
+            //                 color: globals.isLoggedIn?
+            //                 Colors.green:
+            //                 Colors.red,),
                             
-                          SizedBox(height: 10),
+            //               SizedBox(height: 10),
                           
-                          FaIcon(FontAwesomeIcons.server,color: Colors.blue),
-                          SizedBox(height: 10),
-                          FaIcon(is_api_con?
-                            FontAwesomeIcons.solidCheckCircle:
-                            FontAwesomeIcons.solidTimesCircle,
-                            color: is_api_con?
-                            Colors.green:
-                            Colors.red,),
+            //               FaIcon(FontAwesomeIcons.server,color: Colors.blue),
+            //               SizedBox(height: 10),
+            //               FaIcon(is_api_con?
+            //                 FontAwesomeIcons.solidCheckCircle:
+            //                 FontAwesomeIcons.solidTimesCircle,
+            //                 color: is_api_con?
+            //                 Colors.green:
+            //                 Colors.red,),
                             
-                          SizedBox(height: 10),
+            //               SizedBox(height: 10),
                           
-                          FaIcon(FontAwesomeIcons.robot,color: Colors.blue),
-                          SizedBox(height: 10),
+            //               FaIcon(FontAwesomeIcons.robot,color: Colors.blue),
+            //               SizedBox(height: 10),
                           
-                          FaIcon(is_spot_con?
-                            FontAwesomeIcons.solidCheckCircle:
-                            FontAwesomeIcons.solidTimesCircle,
-                            color: is_spot_con?
-                            Colors.green:
-                            Colors.red,),
+            //               FaIcon(is_spot_con?
+            //                 FontAwesomeIcons.solidCheckCircle:
+            //                 FontAwesomeIcons.solidTimesCircle,
+            //                 color: is_spot_con?
+            //                 Colors.green:
+            //                 Colors.red,),
                             
-                          SizedBox(height: 10),
+            //               SizedBox(height: 10),
                           
-                          FaIcon(FontAwesomeIcons.video,color: Colors.blue),
-                          SizedBox(height: 10),
+            //               FaIcon(FontAwesomeIcons.video,color: Colors.blue),
+            //               SizedBox(height: 10),
                           
-                          FaIcon(is_cam_con?
-                            FontAwesomeIcons.solidCheckCircle:
-                            FontAwesomeIcons.solidTimesCircle,
-                            color: is_cam_con?
-                            Colors.green:
-                            Colors.red,),
+            //               FaIcon(is_cam_con?
+            //                 FontAwesomeIcons.solidCheckCircle:
+            //                 FontAwesomeIcons.solidTimesCircle,
+            //                 color: is_cam_con?
+            //                 Colors.green:
+            //                 Colors.red,),
                             
-                          SizedBox(height: 10),
+            //               SizedBox(height: 10),
                           
-                          FaIcon(FontAwesomeIcons.batteryFull,color: Colors.blue),
-                          SizedBox(height: 10),
-                          // Text(is_spot_con?battery+' %':'- ',style: 
-                          // TextStyle(
-                          //   fontSize: 20,
-                          //   fontWeight: FontWeight.bold,
-                          //   color: Colors.blue
-                          //   ),
-                          // ),
-                          RichText(text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: is_spot_con?battery:'-',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  )
-                              ),
-                              WidgetSpan(
-                                child:  Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                        child: FaIcon(FontAwesomeIcons.percentage,color: Colors.blue),
-                                      ),
-                                )
-                            ]
-                          )),
-                          SizedBox(height: 10),
-                          FaIcon(FontAwesomeIcons.temperatureHigh,color: Colors.blue),
-                          SizedBox(height: 10),
-                          Text(is_spot_con?temp+' °':'- °',
-                          style: 
-                          TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue
-                            ),
-                          ),
-                        ],
-                      )
-                      )
-                      ),
-                  );
-            }, 
-            icon: FaIcon(FontAwesomeIcons.robot,color: Colors.blue,)
-            )
-            ,
+            //               FaIcon(FontAwesomeIcons.batteryFull,color: Colors.blue),
+            //               SizedBox(height: 10),
+            //               // Text(is_spot_con?battery+' %':'- ',style: 
+            //               // TextStyle(
+            //               //   fontSize: 20,
+            //               //   fontWeight: FontWeight.bold,
+            //               //   color: Colors.blue
+            //               //   ),
+            //               // ),
+            //               RichText(text: TextSpan(
+            //                 children: [
+            //                   TextSpan(
+            //                     text: is_spot_con?battery:'-',
+            //                     style: TextStyle(
+            //                       color: Colors.blue,
+            //                       fontWeight: FontWeight.bold,
+            //                       fontSize: 30,
+            //                       )
+            //                   ),
+            //                   WidgetSpan(
+            //                     child:  Padding(
+            //                             padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            //                             child: FaIcon(FontAwesomeIcons.percentage,color: Colors.blue),
+            //                           ),
+            //                     )
+            //                 ]
+            //               )),
+            //               SizedBox(height: 10),
+            //               FaIcon(FontAwesomeIcons.temperatureHigh,color: Colors.blue),
+            //               SizedBox(height: 10),
+            //               Text(is_spot_con?temp+' °':'- °',
+            //               style: 
+            //               TextStyle(
+            //                 fontSize: 30,
+            //                 fontWeight: FontWeight.bold,
+            //                 color: Colors.blue
+            //                 ),
+            //               ),
+            //             ],
+            //           )
+            //           )
+            //           ),
+            //       );
+            // }, 
+            // icon: FaIcon(FontAwesomeIcons.robot,color: Colors.blue,)
+            // )
              globals.isLoggedIn?IconButton(
               icon: FaIcon(FontAwesomeIcons.signOutAlt,color: Colors.blue,),
               onPressed: (){
