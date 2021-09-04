@@ -15,7 +15,7 @@
   - Let Spot CAM speak by typing text and supported multi langs
 
 - Under Development Features:
-  - Let Spot CAM speak by get the voice from user which is speech to speech, delivered to the spot realtime 
+  - Let Spot CAM speak by getting the voice from the user which is speech to speech, delivered to the spot in real-time
 
 - Future Features:
   - Integrate the moving Spot CAM Features into the apps like moving up, down and zoom in-out
