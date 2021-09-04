@@ -232,6 +232,7 @@ class CustomDrawer extends StatelessWidget {
                 globals.isApiCon = false;
                 globals.isCamCon = false;
                 globals.isSpotCon = false;
+                globals.statement = "";
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => BottomNavScreen(pages_index: 3,)),

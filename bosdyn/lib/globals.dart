@@ -10,6 +10,10 @@ bool isCamCon = false;
 
 bool justLoggedIn = false;
 
+bool justSayByText = false;
+
+bool SayByTextStatus = false;
+
 String username = "";
 
 String password = "";
@@ -21,3 +25,11 @@ String API_IP = "";
 String battery = "";
 
 String Temp = "";
+
+String statement = "";
+
+String SayByTextResult = "";
+
+String SayByTextContent = "";
+
+String lang = "";

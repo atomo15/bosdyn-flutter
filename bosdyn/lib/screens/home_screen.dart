@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,16 @@ import 'package:bosdyn/widgets/widgets.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:foldable_sidebar/foldable_sidebar.dart';
+import 'package:swipedetector/swipedetector.dart';
+import 'package:bosdyn/screens/screens.dart';
+import 'package:dash_chat/dash_chat.dart';
+import 'package:bosdyn/globals.dart' as globals;
+import 'package:http/http.dart' as http;
+// import 'package:dropdown_formfield/dropdown_formfield.dart';
+import 'package:material_dropdown_formfield/material_dropdown_formfield.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase/firebase.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,555 +26,453 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //String _country = 'USA';
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _myActivity = '';
+  String _myActivityResult = '';
+  FSBStatus status = FSBStatus.FSB_CLOSE;
+  FocusNode focusNode = FocusNode();
+  List dataSource = [
+    {
+      "display": "English",
+      "value": "en",
+    },
+    {
+      "display": "Thai",
+      "value": "th",
+    },
+  ];
+  @override
+  void initState() {
+    super.initState();
+    _myActivity = '';
+    _myActivityResult = '';
+  }
+  
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
+    api();
+    FSBStatus drawerStatus;
+    return SafeArea(
+      child: Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       appBar: CustomAppBar(),
-      body: CustomScrollView(
-        physics: ClampingScrollPhysics(),
-        slivers: <Widget>[
-          //_buildHeader(screenHeight),
-          //_buildImageShow(screenHeight),
-          //_buildPreventionTips(screenHeight),
-          //_buildTopBrandsContent(screenHeight),
-          //_buildYourStyle(screenHeight),
-          //_buildYourStyleContent(screenHeight),
-        ],
-      ),
+      body: SwipeDetector(
+        onSwipeRight: (){
+          setState(() {
+            status = FSBStatus.FSB_OPEN;
+          });
+        } ,
+        onSwipeLeft: (){
+          setState(() {
+            status = FSBStatus.FSB_CLOSE;
+          });
+        },
+        child: FoldableSidebarBuilder(
+        status: status,drawer: CustomDrawer(),screenContents:
+        CustomScrollView(
+          physics: ClampingScrollPhysics(),
+          slivers: <Widget>[
+            _buildHeader(screenHeight),
+            _buildForm(screenHeight),
+            _buildResultFromText(screenHeight),
+            //_buildPreventionTips(screenHeight),
+            //_buildTopBrandsContent(screenHeight),
+            //_buildYourStyle(screenHeight),
+            //_buildYourStyleContent(screenHeight),
+          ],
+        ),
+        drawerBackgroundColor: Colors.black,)
+        ),
+        floatingActionButton: FloatingActionButton(
+        onPressed: (){
+        setState(() {
+          status = status == FSBStatus.FSB_OPEN?FSBStatus.FSB_CLOSE:FSBStatus.FSB_OPEN;
+        });
+      },child: FaIcon(FontAwesomeIcons.bars,color: Colors.black,),),
+    )
     );
   }
-
+  
   SliverToBoxAdapter _buildHeader(double screenHeight) {
+    var username = "";
+    var passwords = "";
+    var ip="";
+    var api_ip = "";
     return SliverToBoxAdapter(
       child: Container(
-        padding: const EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(40.0),
-            bottomRight: Radius.circular(40.0),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+        child: Center(
+          child: 
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                // Text(
-                //   'Verity',
-                //   style: const TextStyle(
-                //     color: Colors.white,
-                //     fontSize: 25.0,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
-                // CountryDropdown(
-                //   countries: ['CN', 'FR', 'IN', 'IT', 'UK', 'USA'],
-                //   country: _country,
-                //   onChanged: (val) => setState(() => _country = val),
-                // ),
-              ],
-            ),
-            // SizedBox(height: screenHeight * 0.03),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'What are you looking for?',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                 SizedBox(height: screenHeight * 0.005),
-                // Text(
-                //   'If you feel sick with any COVID-19 symptoms, please call or text us immediately for help',
-                //   style: const TextStyle(
-                //     color: Colors.white70,
-                //     fontSize: 15.0,
-                //   ),
-                // ),
-                //SizedBox(height: screenHeight * 0.02),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: <Widget>[
-                //     FlatButton.icon(
-                //       padding: const EdgeInsets.symmetric(
-                //         vertical: 10.0,
-                //         horizontal: 20.0,
-                //       ),
-                //       onPressed: () {},
-                //       color: Colors.red,
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(30.0),
-                //       ),
-                //       icon: const Icon(
-                //         Icons.phone,
-                //         color: Colors.white,
-                //       ),
-                //       label: Text(
-                //         'Call Now',
-                //         // style: Styles.buttonTextStyle,
-                //       ),
-                //       textColor: Colors.white,
-                //     ),
-                //     FlatButton.icon(
-                //       padding: const EdgeInsets.symmetric(
-                //         vertical: 10.0,
-                //         horizontal: 20.0,
-                //       ),
-                //       onPressed: () {},
-                //       color: Colors.blue,
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(30.0),
-                //       ),
-                //       icon: const Icon(
-                //         Icons.chat_bubble,
-                //         color: Colors.white,
-                //       ),
-                //       label: Text(
-                //         'Send SMS',
-                //         // style: Styles.buttonTextStyle,
-                //       ),
-                //       textColor: Colors.white,
-                //     ),
-                //   ],
-                // ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  SliverToBoxAdapter _buildPreventionTips(double screenHeight) {
-    return SliverToBoxAdapter(
-      child: Container(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Top Brands',
-              style: const TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: prevention
-            //       .map((e) => Column(
-            //             children: <Widget>[
-            //               Image.asset(
-            //                 e.keys.first,
-            //                 height: screenHeight * 0.12,
-            //               ),
-            //               SizedBox(height: screenHeight * 0.015),
-            //               Text(
-            //                 e.values.first,
-            //                 style: const TextStyle(
-            //                   fontSize: 16.0,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             ],
-            //           ))
-            //       .toList(),
-            // ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  SliverToBoxAdapter _buildTopBrandsContent(double screenHeight) {
-    var brand_list = ['channel-logo','dior-logo','prada-logo','louis_vuitton'];
-    List<Widget> brands_list = [];
-    for(var i =0;i<brand_list.length;i++){
-      brands_list.add(brands(context, brand_list[i]));
-    }
-    return SliverToBoxAdapter(
-      child: Container(
-        // margin: const EdgeInsets.symmetric(
-        //   vertical: 10.0,
-        //   horizontal: 50.0,
-        // ),
-        padding: const EdgeInsets.all(10.0),
-        height: screenHeight * 0.15,
-         width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFAD9FE4), Colors.amber],
-          ),
-          borderRadius: BorderRadius.circular(0.0),
-        ),
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 5.0),
-          height: 300.0,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            // children: <Widget>[
-            //   Row(children: brands_list),
-            // ],
-            children: brands_list,
-          ),
-        ),
-        // child: Container(
-        //     height: 130,
-        //     child: ListView(
-        //       scrollDirection: Axis.horizontal,
-        //       padding: EdgeInsets.only(left: 16),
-        //       physics: BouncingScrollPhysics(),
-        //       children: <Widget>[
-        //         _buildSymptomItem("images/channel-logo.png", "Channel"),
-        //         _buildSymptomItem("images/dior-logo.png", "Dior"),
-        //         _buildSymptomItem("images/prada-logo.png", "Prada"),
-        //       ],
-        //     ),
-        //   ),
-      ),
-    );
-  }
-  
-  SliverToBoxAdapter _buildYourStyle(double screenHeight) {
-    return SliverToBoxAdapter(
-      child: Container(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Your Style',
-              style: const TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 5.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: prevention
-            //       .map((e) => Column(
-            //             children: <Widget>[
-            //               Image.asset(
-            //                 e.keys.first,
-            //                 height: screenHeight * 0.12,
-            //               ),
-            //               SizedBox(height: screenHeight * 0.015),
-            //               Text(
-            //                 e.values.first,
-            //                 style: const TextStyle(
-            //                   fontSize: 16.0,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //                 textAlign: TextAlign.center,
-            //               )
-            //             ],
-            //           ))
-            //       .toList(),
-            // ),
-          ],
-        ),
-      ),
-    );
-  }
-  
-  SliverToBoxAdapter _buildYourStyleContent(double screenHeight) {
-    return SliverToBoxAdapter(
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 0.0,
-        ),
-        padding: const EdgeInsets.all(10.0),
-        height: screenHeight * 0.40,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFAD9FE4), Colors.amber],
-          ),
-          borderRadius: BorderRadius.circular(0.0),
-        ),
-        child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              SingleChildScrollView( 
-                child: Wrap(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: screenHeight * 0.02),
-                Row(
-                  children: [
-                    const SizedBox(width:100.0),
-                    FavoriteButton(
-                        isFavorite: true,
-                        // iconDisabledColor: Colors.white,
-                        valueChanged: (_isFavorite) {
-                          print('Is Favorite : $_isFavorite');
-                        },
-                      ),
-                  ],
-                ),
-                Image.asset('images/prada_overalls.webp',height: 150,width: 200,),
-                Text(
-                  'Prada',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+                  FaIcon(FontAwesomeIcons.robot,color: Colors.blue),
+                  SizedBox(
+                    width: 10,
                   ),
-                ),
-                SizedBox(height: screenHeight * 0.01),
-                Text(
-                  'Overalls\nM International',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
+                  Text("LET SPOT SPEAK",style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),),
+                  SizedBox(
+                    width: 10,
                   ),
-                  maxLines: 2,
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: screenHeight * 0.02),
-                Row(
-                  children: [
-                    const SizedBox(width:100.0),
-                    FavoriteButton(
-                        isFavorite: true,
-                        // iconDisabledColor: Colors.white,
-                        valueChanged: (_isFavorite) {
-                          print('Is Favorite : $_isFavorite');
-                        },
-                      ),
-                  ],
-                ),
-                Image.asset('images/chanel_classic.jpeg',height: 150,width: 200,),
-                Text(
-                  'Chanel',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+                  globals.isSpotCon?FaIcon(
+                  FontAwesomeIcons.solidCheckCircle,
+                  color: Colors.green,):
+                  FaIcon(
+                  FontAwesomeIcons.solidTimesCircle,
+                  color: Colors.red,),
+                  SizedBox(
+                    width: 10,
                   ),
-                ),
-                SizedBox(height: screenHeight * 0.01),
-                Text(
-                  'Classic WOC\nM International',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                  maxLines: 2,
-                ),
-              ],
-            ),
+                  FaIcon(FontAwesomeIcons.commentAlt,color: Colors.blue),
                 ],
-              )
-              )
-            ],
-            ),
-      ),
+              ),
+          )
+          )
     );
   }
-   SliverToBoxAdapter _buildImageShow(double screenHeight) {
-     List<NetworkImage> images = [];
-      List<String> url = ['https://firebasestorage.googleapis.com/v0/b/my-bot-5849f.appspot.com/o/louis.jpg?alt=media&token=fc0d987a-94cc-4291-a579-bf6fb87abe19',
-      'https://cdn-images-1.medium.com/max/2000/1*GqdzzfB_BHorv7V2NV7Jgg.jpeg',
-      'https://cdn-images-1.medium.com/max/2000/1*wnIEgP1gNMrK5gZU7QS0-A.jpeg',
-      ];
-      List<Image> images_list = [];
-      List<String> images_file = [
-        'chanel-bg.webp',
-        'dior-bg.webp'
-      ];
-      
-      for(var i=0;i<images_file.length;i++){
-        images_list.add(Image.asset('images/'+images_file[i],fit: BoxFit.cover,));
-      }
-      for(var i=0;i<url.length;i++){
-        images.add(NetworkImage(url[i]));
-      }
-    
+
+  SliverToBoxAdapter _buildForm(double screenHeight) {
+    var username = "";
+    var passwords = "";
+    var ip="";
+    var api_ip = "";
+    var statement = "";
     return SliverToBoxAdapter(
       child: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 0,
-        ),
-        //padding: const EdgeInsets.all(10.0),
-        height: screenHeight * 0.25,
-        // decoration: BoxDecoration(
-        //   gradient: LinearGradient(
-        //     colors: [Colors.blue, Colors.amber],
-        //   ),
-        //   borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        // ),
-        child: Carousel(
-                boxFit: BoxFit.fill,
-                autoplay: true,
-                animationCurve: Curves.fastOutSlowIn,
-                animationDuration: Duration(milliseconds: 3000),
-                dotSize: 6.0,
-                dotIncreasedColor: Colors.blueAccent,
-                dotBgColor: Colors.transparent,
-                dotPosition: DotPosition.bottomRight,
-                dotVerticalPadding: 10.0,
-                showIndicator: true,
-                indicatorBgPadding: 7.0,
-                images: images_list
-                ),
-      ),
-    );
-   }
-   Widget _buildSymptomItem(String path, String text) {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-            gradient: LinearGradient(
-              colors: [
-                //AppColors.backgroundColor,
-                Colors.white,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            border: Border.all(color: Colors.white),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(1, 1),
-                spreadRadius: 1,
-                blurRadius: 3,
-              )
+        child: Center(
+          child: 
+          !globals.isLoggedIn?
+          // Text('Usename : '+globals.username
+          // +'\n'+'IP Address : '+globals.IP
+          // +'\n'+'API IP Address : '+globals.API_IP,
+          // style: TextStyle(
+          //   fontSize: 20),)
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: screenHeight*0.02,),
+              Text("Please make sure!!\nLogin with correct username and password\nAPI Service Available\nFill API KEYS correctly",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                    color: Colors.orange,
+                    fontSize: 18,
+                    //backgroundColor: Colors.blue,
+                    fontWeight: FontWeight.bold
+                  ),),
+              
+              SizedBox(height: screenHeight*0.01,),
+              SizedBox(height: screenHeight*0.01,),
+              SizedBox(height: screenHeight*0.01,),
+              // FaIcon(FontAwesomeIcons.server,color: Colors.blue),
+              SizedBox(height: screenHeight*0.01,),
+              
             ],
-          ),
-          padding: EdgeInsets.only(top: 15),
-          child: Image.asset(path),
-          margin: EdgeInsets.only(right: 20),
-        ),
-        SizedBox(height: 7),
-        Text(
-          text,
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
+          )
+          :Form(
+            key: _formKey,
+            child: Column(
+            children: [
+              SizedBox(height: 20,),
+              
+              Center(
+                child:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                children:[
+                  FaIcon(FontAwesomeIcons.commentAlt,color: Colors.blue),
+                  SizedBox(width: 20,),Text("TYPING TO LET SPOT SPEAK",style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FaIcon(FontAwesomeIcons.commentAlt,color: Colors.blue),
+                ]
+              ),
+              ),
+              SizedBox(height: 20,),
+              Container(
+                width: 300,
+                child: 
+                TextFormField(
+                scrollPadding: const EdgeInsets.all(20.0),
+                style: TextStyle(
+                  color: Colors.blue,
+                  ),
+                decoration: const InputDecoration(
+                  // icon: FaIcon(FontAwesomeIcons.commentAlt),
+                  hintText: 'Hello am a Spot',
+                  labelText: 'What do you want the spot to says? *',
+                  labelStyle: TextStyle(
+                    color: Colors.blue,
+                    decorationColor: Colors.blue
+                  ),
+                  hintStyle: TextStyle(
+                    color: Colors.blue
+                  ),
+                  // fillColor: Colors.blue,
+                  // filled: true
+                  //contentPadding: EdgeInsets.all(10)
+                ),
+                onSaved: (String? value) {
+                  statement = value!;
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty || value.length<1) {
+                    return 'Please enter some text';
+                  }
+                  else {
+                    if(value.contains(RegExp(r'[A-Z]||[0-9]'))){
+                      return null;
+                    }
+                    else{
+                      return 'Please contain a character to let the spot speak';
+                    }
+                  }
+                  return null;
+                  //return (value != null && value.contains('@')) ? 'Do not use the @ char.' : null;
+                },
+              ),
+              ),
+              SizedBox(height: 15,)
+              ,
+              DropDownFormField(
+                  autovalidate: true,
+                    validator: (value) {
+                      if (value == '') {
+                        return "can't be empty";
+                      }
+                      if (value == 'Swimming') {
+                        return 'Swimming Not Allowed!';
+                      } else {
+                        return null;
+                      }
+                    },
+                    innerBackgroundColor: Colors.black,
+                    wedgeIcon: Icon(Icons.keyboard_arrow_down),
+                    wedgeColor: Colors.lightBlue,
+                    innerTextStyle: TextStyle(color: Colors.blue),
+                    focusNode: focusNode,
+                    inputDecoration: OutlinedDropDownDecoration(
+                        labelStyle: TextStyle(color: Colors.blue),
+                        labelText: "Languages",
+                        borderColor: Colors.blue,
+                        borderRadius: BorderRadius.circular(20),
+                        
+                        ),
+                    hintText: 'Please choose one',
+                    value: _myActivity,
+                    onSaved: (value) {
+                      setState(() {
+                        _myActivity = value;
+                        globals.lang = value;
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _myActivity = value;
+                      });
+                    },
+                    dataSource: dataSource,
+                    textField: 'display',
+                    valueField: 'value',
+                ),
+              SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Validate will return true if the form is valid, or false if
+                    // the form is invalid.
+                    if (_formKey.currentState!.validate()) {
+                       _formKey.currentState?.save();
+                       globals.statement = statement;
+                       setState(() {
+                        _myActivityResult = _myActivity;
+                      });
+                       print(statement);
+                       api();
+                         Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => BottomNavScreen(pages_index: 0,)),
+                          );
+                    }
+                  },
+                  child: 
+                  RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                                text: "Speak ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  )
+                              ),
+                        WidgetSpan(
+                          child: FaIcon(FontAwesomeIcons.commentAlt,color: Colors.black),
+                        )
+                      ]
+                    ),
+                  )
+                ),
+              ),
+              
+            ],
+          )
+            
+          )
+          
+          )
+      )
     );
   }
-  @override
-  Widget brands(BuildContext context, String filename) {
-    //print(filename);
-    var s = filename.split('-');
-    return Center(
-              child: Card(
-                //  shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(10.0),
-                //   ),
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    print('Card '+ s[0] +' tapped.');
-                  },
-                  // border:OutlinedBorder(
-                  //    borderRadius: BorderRadius.circular(10.0),
-                  // ),
-                  child: Image.asset('images/'+filename+'.png',width: 100,height: 200,fit: BoxFit.contain),
-                  // child: const SizedBox(
-                  //   width: 100,
-                  //   height: 100,
-                  //   child: Container(
-                  //    child: Image.asset('images/channel-logo.png',fit: BoxFit.contain),
-                  //   ),  
-                  ),
-                ),
-              );
-  }
-  @override
-  Widget StyleCard(BuildContext context, String filename,double screenHeight) {
-    //print(filename);
-    var s = filename.split('-');
-    return Center(
-              child: Card(
-                //  shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(10.0),
-                //   ),
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    print('Card '+ s[0] +' tapped.');
-                  },
-                  child: Wrap(
-          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-          verticalDirection: VerticalDirection.down,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height:20.0),
+  
+  SliverToBoxAdapter _buildResultFromText(double screenHeight) {
+      var username = "";
+      var passwords = "";
+      var ip="";
+      var api_ip = "";
+      late var r = globals.SayByTextContent;
+      return SliverToBoxAdapter(
+        child: Container(
+          child: Center(
+            child: 
+              globals.isLoggedIn?
+              Column(
+                children: [
                     Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FaIcon(FontAwesomeIcons.robot,color: Colors.blue),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(globals.SayByTextResult==""?"RESULT":globals.SayByTextResult,style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold
+                      ),),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      globals.SayByTextStatus?FaIcon(
+                      FontAwesomeIcons.solidCheckCircle,
+                      color: Colors.green,):
+                      FaIcon(
+                      FontAwesomeIcons.solidTimesCircle,
+                      color: Colors.red,),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      FaIcon(FontAwesomeIcons.robot,color: Colors.blue),
+                    ],
+                    ),
+                    SizedBox(height: 20,)
+                    ,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(width:200.0),
-                        FavoriteButton(
-                            isFavorite: true,
-                            // iconDisabledColor: Colors.white,
-                            valueChanged: (_isFavorite) {
-                              print('Is Favorite : $_isFavorite');
-                            },
-                          ),
+                        FaIcon(FontAwesomeIcons.commentAlt,color: Colors.blue),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(globals.statement==""?"CONTENT":globals.statement,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold
+                        ),),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        globals.SayByTextStatus?FaIcon(
+                        FontAwesomeIcons.solidCheckCircle,
+                        color: Colors.green,):
+                        FaIcon(
+                        FontAwesomeIcons.solidTimesCircle,
+                        color: Colors.red,),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        FaIcon(FontAwesomeIcons.commentAlt,color: Colors.blue),
                       ],
                     ),
-                    Image.asset('images/prada_overalls.webp',height: 150,width: 200,),
-                    Text(
-                      'Prada',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    Text(
-                      'Overalls\nM International',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      ),
-                      maxLines: 2,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-                  ),
-                ),
-              );
+                ],
+              ):SizedBox(height:0)
+              
+            )
+            )
+      );
+    }
+
+  void api() async{
+              Future<String> fetchApi() async {
+                        print("AM IN SPEAK API");
+                        if(globals.isLoggedIn==true){
+                          print(globals.lang);
+                          // globals.isApiCon = false;
+                          // globals.isCamCon = false;
+                          // globals.isSpotCon = false;
+                          // globals.Temp = "";
+                          // globals.battery="";
+                          String api_url = globals.API_IP;
+                          String url =  'https://'+api_url+'.ngrok.io/speak';
+                          globals.justSayByText = true;
+                          try{
+                            final response = await  http.post(
+                              Uri.parse(url),
+                              headers: <String, String>{
+                                'Content-Type': 'application/json; charset=UTF-8',
+                              },
+                              body: jsonEncode(<String, String>{
+                                'user': globals.username,
+                                'password':globals.password,
+                                'ip':globals.IP,
+                                'statement':globals.statement,
+                                'lang':globals.lang
+                              }),
+                            );
+                            if (response.statusCode == 200) {
+                              
+        
+                              var api_result = jsonDecode(response.body);
+                              print(api_result);
+                              globals.SayByTextResult = api_result['issue'];
+                              globals.SayByTextContent = globals.statement;
+                              globals.SayByTextStatus = api_result['result'];
+                              print(globals.SayByTextContent);
+                              // globals.battery = api_result['battery'].toString();
+                              // globals.Temp =  api_result['temperature'].toString();
+                              // globals.isSpotCon = api_result['spot'];
+                              // globals.isCamCon = api_result['payload'];
+                              globals.statement = "";
+                              globals.isApiCon = true;
+                              return "work";
+                              } 
+                          }catch (error){
+                            print("post error");
+                          }
+                          
+                          
+                          
+                        }
+                        globals.isApiCon = false;
+                        print('api not working');
+                        return "api not working";
+                        
+                      }
+          await fetchApi();  
   }
 
 }

@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:bosdyn/globals.dart' as globals;
 import 'package:bosdyn/screens/screens.dart';
+import 'package:foldable_sidebar/foldable_sidebar.dart';
+import 'package:swipedetector/swipedetector.dart';
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({ Key? key }) : super(key: key);
@@ -16,20 +18,48 @@ class Login_Screen extends StatefulWidget {
 
 class _Login_ScreenState extends State<Login_Screen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  FSBStatus status = FSBStatus.FSB_CLOSE;
+  
   @override
   Widget build(BuildContext context) {
+    api();
+    FSBStatus drawerStatus;
     final screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
       appBar: CustomAppBar(),
       backgroundColor: Colors.black,
-      body: CustomScrollView(
-        physics: ClampingScrollPhysics(),
-        slivers: <Widget>[
-          _buidTitle(screenHeight),
-          _buildForm(screenHeight),
-        ]
+      body: SwipeDetector(
+        onSwipeRight: (){
+          setState(() {
+            status = FSBStatus.FSB_OPEN;
+          });
+        } ,
+        onSwipeLeft: (){
+          setState(() {
+            status = FSBStatus.FSB_CLOSE;
+          });
+        },
+        child: FoldableSidebarBuilder(
+        status: status,drawer: CustomDrawer(),screenContents: 
+        CustomScrollView(
+          physics: ClampingScrollPhysics(),
+          slivers: <Widget>[
+            _buidTitle(screenHeight),
+            _buildForm(screenHeight),
+          ]
+        ),
+        drawerBackgroundColor: Colors.black,)
+        ),
+        floatingActionButton: FloatingActionButton(
+        onPressed: (){
+        setState(() {
+          status = status == FSBStatus.FSB_OPEN?FSBStatus.FSB_CLOSE:FSBStatus.FSB_OPEN;
+        });
+      },child: FaIcon(FontAwesomeIcons.bars,color: Colors.black,),),
       )
-    );
+    )
+    ;
   }
   SliverToBoxAdapter _buidTitle(double screenHeight) {
     return SliverToBoxAdapter(
@@ -288,7 +318,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                 decoration: const InputDecoration(
                   //icon: Icon(Icons.person),
                   hintText: '192.168.80.3',
-                  labelText: 'API IP Address *',
+                  labelText: 'API KEYS *',
                   labelStyle: TextStyle(
                     color: Colors.blue
                   ),
@@ -323,6 +353,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                        globals.password = passwords;
                        globals.IP = ip;
                        globals.API_IP = api_ip;
+                       globals.statement = "";
                        
                        print('check ip');
                        print(globals.IP);
