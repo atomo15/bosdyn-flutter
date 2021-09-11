@@ -13,9 +13,9 @@
 - This app is supported iOS, Android and Web Apps
 
 - Current Features:
-  [x] Get battery status
-  [x] Get Temperature status
-  [x] Let Spot CAM speak by typing text and supported multi langs
+  - [x] Get battery status
+  - [x] Get Temperature status
+  - [x] Let Spot CAM speak by typing text and supported multi langs
 
 - Under Development Features:
   - Let Spot CAM speak by getting the voice from the user which is speech to speech, delivered to the spot in real-time
