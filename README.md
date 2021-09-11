@@ -13,12 +13,16 @@
 - This app is supported iOS, Android and Web Apps
 
 - Current Features:
-  - [x] Get battery status
-  - [x] Get Temperature status
+  - [x] Show Battery and Temperature status
   - [x] Let Spot CAM speak by typing text and supported multi langs
-
+  - [x] Let Spot CAM speak by getting the voice from the user which is speech to speech, delivered to the spot in real-time
+  - [x] Store the audio file on firebase (Storage)
+  - [x] Store the contents of audion file on firebase (real-time database)
+  - [x] Diplay the detail of file such as Filename, Language, Statement on the apps
+ 
 - Under Development Features:
-  - Let Spot CAM speak by getting the voice from the user which is speech to speech, delivered to the spot in real-time
+  - [ ] Listening the sound from SPOT CAM microphone
+  - [ ] Response the dialog to the user like a Siri or Google Assistant
 
 - Future Features:
   - Integrate the moving Spot CAM Features into the apps like moving up, down and zoom in-out
